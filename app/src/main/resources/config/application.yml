@@ -14,7 +14,7 @@ spring:
     name: @project-name@
     version: @project-version@
   profiles:
-    active: @runtime-environment@
+    active: prod
   mvc:
     servlet:
       load-on-startup: 1
@@ -28,9 +28,6 @@ spring:
       enabled: on
   jpa:
     open-in-view: off
-    hibernate:
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
   messages:
     basename: config.i18n.service, config.i18n.validation, config.i18n.exception
 

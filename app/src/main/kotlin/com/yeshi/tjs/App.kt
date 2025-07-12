@@ -24,7 +24,7 @@ class BootListener(app: SpringApplication, args: Array<String?>?) : SpringApplic
         if (mainLogger.isDebugEnabled) mainLogger.debug("加载启动监听器；命令行参数：{}", args.contentToString())
     }
 
-    override fun ready(context: ConfigurableApplicationContext, timeTaken: Duration?)
+    override fun ready(context: ConfigurableApplicationContext, timeTaken: Duration)
     {
         if (!mainLogger.isInfoEnabled) return
 
@@ -32,6 +32,7 @@ class BootListener(app: SpringApplication, args: Array<String?>?) : SpringApplic
         val osInfo = ManagementFactory.getOperatingSystemMXBean()
         val jvmInfo = ManagementFactory.getRuntimeMXBean()
 
+        val projectName = env.getProperty("spring.application.name", "project")
         val protocol = if (env.getProperty("server.ssl.enabled") in arrayOf("true", "on")) "https" else "http"
         val port = env.getProperty("server.port", "8080")
 
@@ -39,9 +40,10 @@ class BootListener(app: SpringApplication, args: Array<String?>?) : SpringApplic
             """
 
                 ---------------------------------------------------------------------------
-                    (♥◠‿◠)ﾉﾞ [ ${env.getProperty("spring.application.name", "project")} ] 启动成功！ ლ(´ڡ`ლ)ﾞ
+                    (♥◠‿◠)ﾉﾞ [ $projectName ] 启动成功！ ლ(´ڡ`ლ)ﾞ
                          Version: ${env.getProperty("spring.application.version", "unknown")}
                        Java info: ${jvmInfo.vmName} v${jvmInfo.vmVersion}
+                     Kotlin info: v${KotlinVersion.CURRENT}
                      System info: ${osInfo.name} ${osInfo.arch}
                     Started time: ${DATETIME_FORMATTER.format(LocalDateTime.now())}
                              PID: ${jvmInfo.pid}

@@ -1,8 +1,8 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
-	kotlin("jvm") version "1.9.25"
-	kotlin("plugin.spring") version "1.9.25"
+	kotlin("jvm") version "2.2.0"
+	kotlin("plugin.spring") version "2.2.0"
 	id("org.springframework.boot") version "3.5.3"
 	id("io.spring.dependency-management") version "1.1.7"
 	id("org.hibernate.orm") version "7.0.3.Final"
@@ -68,7 +68,7 @@ dependencies {
 	// Jose4j
 	implementation("org.bitbucket.b_c", "jose4j", "0.9.6")
 
-	// PostgreSQL
+	// Postgres
 	runtimeOnly("org.postgresql", "postgresql")
 
 	// Junit
@@ -76,7 +76,7 @@ dependencies {
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-springBoot.mainClass = "com.yeshi.tjs.App"
+springBoot.mainClass = "com.yeshi.tjs.AppKt"
 
 tasks.bootRun {
 	args = listOf("--spring.profiles.active=$env")
