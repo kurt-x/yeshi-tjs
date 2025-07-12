@@ -1,0 +1,13 @@
+.idea
+.vscode
+
+.gradle
+.kotlin
+
+/log
+bulid
+!**/src/main/**/bulid
+!**/src/test/**/bulid
+
+application-prod.yml
+application-local.yml
