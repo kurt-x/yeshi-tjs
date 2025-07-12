@@ -1,0 +1,29 @@
+server:
+  ssl:
+    enabled: off
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:web
+  data:
+    redis:
+      host: 192.168.0.134
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+#    show-sql: on
+    properties:
+      hibernate:
+        format_sql: on
+  h2:
+    console:
+      enabled: off
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, metrics, env, info, loggers, beans, prometheus
+  endpoint:
+    health:
+      show-details: always

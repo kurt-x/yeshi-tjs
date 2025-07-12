@@ -1,0 +1,48 @@
+server:
+  port: 10000
+
+spring:
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+  jackson:
+    visibility:
+      all: public_only
+    default-property-inclusion: non_null
+    deserialization:
+      fail-on-unknown-properties: off
+  application:
+    name: @project-name@
+    version: @project-version@
+  profiles:
+    active: @runtime-environment@
+  mvc:
+    servlet:
+      load-on-startup: 1
+      path: /api
+    problemdetails:
+      enabled: on
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  threads:
+    virtual:
+      enabled: on
+  jpa:
+    open-in-view: off
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  messages:
+    basename: config.i18n.service, config.i18n.validation, config.i18n.exception
+
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+    local-cache-scope: statement # 关闭一级缓存
+    cache-enabled: on # 是否开启二级缓存
+
+logging:
+  file:
+    path: log
+  pattern:
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) - %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} %5p - [%t] %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}"
