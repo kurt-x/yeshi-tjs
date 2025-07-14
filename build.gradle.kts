@@ -1,7 +1,8 @@
-val env = "local"
+// val env = "local"
 // val env = "dev"
 // val env = "test"
-// val env = "prod"
+val env = "prod"
+println("Active environment: $env")
 
 extra["env"] = env
 
