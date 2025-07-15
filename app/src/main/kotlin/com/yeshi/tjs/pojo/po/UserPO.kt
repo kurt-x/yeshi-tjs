@@ -13,13 +13,14 @@ import org.hibernate.annotations.SQLRestriction
 /** # 用户表 */
 @Entity(name = "User")
 @Table(
-    name = "user_dt",
+    name = "users",
     uniqueConstraints = [
-        UniqueConstraint("uk_user_uuid", ["uuid"]),
-        UniqueConstraint("uk_user_username", ["username", "deleted_time"]),
-        UniqueConstraint("uk_user_phone", ["phone", "deleted_time"]),
-        UniqueConstraint("uk_user_email", ["email", "deleted_time"]),
+        UniqueConstraint("uk_users_uuid", ["uuid"]),
+        UniqueConstraint("uk_users_name", ["name", "deleted_time"]),
+        UniqueConstraint("uk_users_phone", ["phone", "deleted_time"]),
+        UniqueConstraint("uk_users_email", ["email", "deleted_time"]),
     ],
+
     comment = "用户表"
 )
 @SQLRestriction("deleted_time is null")
@@ -34,7 +35,7 @@ class UserPO : BasePO()
     @Size(max = 255)
     @Pattern(regexp = REGEX_USER_NAME)
     @Column(nullable = false, comment = "用户名")
-    var username: String? = null
+    var name: String? = null
 
     /** 密码（加密后的密文） */
     @Size(max = 500)
@@ -61,9 +62,9 @@ class UserPO : BasePO()
     @Size(min = 1)
     @ManyToMany
     @JoinTable(
-        name = "user_role_at",
-        joinColumns = [JoinColumn("user_id")],
-        inverseJoinColumns = [JoinColumn("role_id")],
+        name = "user_roles",
+        joinColumns = [JoinColumn("user_id", foreignKey = ForeignKey(name = "fk_user_roles_user"))],
+        inverseJoinColumns = [JoinColumn("role_id", foreignKey = ForeignKey(name = "fk_user_roles_role"))],
         comment = "角色集",
     )
     @SQLRestriction("deleted_time is null")

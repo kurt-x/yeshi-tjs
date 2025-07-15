@@ -18,7 +18,7 @@ import java.util.*
  *
  * 获取当前对象对应的日志记录器
  *
- * **每次使用都会从日志记录器工厂获取，需复用场景不建议使用**
+ * **每次使用都会从日志记录器工厂获取，需复用场景不要使用**
  */
 inline val <reified T> T.LOG: Logger get() = LoggerFactory.getLogger(T::class.java)
 
@@ -60,17 +60,9 @@ val UUID4 get() = UUID.randomUUID()!!
 
 /** @return [UUID]v7 */
 val UUID7: UUID
-    get()
-    {
+    get() = run {
         var currentTime = System.currentTimeMillis()
-        return runCatching {
-            // 防止时钟回拨
-            while (currentTime < lastTimestamp)
-            {
-                Thread.sleep(1)
-                currentTime = System.currentTimeMillis()
-            }
-            lastTimestamp = currentTime
-            Generators.timeBasedEpochRandomGenerator().generate()
-        }.getOrElse { throw RuntimeException(it) }
+        while (currentTime < lastTimestamp) currentTime = Thread.sleep(1).let { System.currentTimeMillis() }
+        lastTimestamp = currentTime
+        Generators.timeBasedEpochRandomGenerator().generate()
     }

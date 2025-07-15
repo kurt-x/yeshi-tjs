@@ -3,6 +3,7 @@ package com.yeshi.tjs.core.exception
 import org.slf4j.LoggerFactory
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.context.MessageSource
+import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatusCode
@@ -27,14 +28,6 @@ class GlobalExceptionHandler(messageSource: MessageSource, private val publisher
         setMessageSource(messageSource)
     }
 
-    /** 处理业务异常 */
-    @ExceptionHandler(ServiceException::class)
-    fun handleServiceException(e: ServiceException, req: WebRequest)
-    {
-        log.debug("-- service exception", e)
-        handleExceptionInternal(e, null, e.headers, e.statusCode, req)
-    }
-
     /** 保底异常处理 */
     @ExceptionHandler(Exception::class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -45,7 +38,7 @@ class GlobalExceptionHandler(messageSource: MessageSource, private val publisher
         }.onFailure {
             System.err.printf("--\uD83D\uDEA8 Logging failed: %s%n", it.message)
             it.printStackTrace(System.err)
-        }
+        }.let { messageSource!!.getMessage("exception", null, "Server error", LocaleContextHolder.getLocale()) }
 
     override fun handleHandlerMethodValidationException(
         e: HandlerMethodValidationException,

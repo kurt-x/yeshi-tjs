@@ -11,8 +11,8 @@ import org.hibernate.annotations.SQLRestriction
 /** # 权限表 */
 @Entity(name = "Permission")
 @Table(
-    name = "permission_dt",
-    uniqueConstraints = [UniqueConstraint("uk_permission_flag", ["flag", "deleted_time"])],
+    name = "permissions",
+    uniqueConstraints = [UniqueConstraint("uk_permissions_flag", ["flag", "deleted_time"])],
     comment = "权限表"
 )
 @SQLRestriction("deleted_time is null")

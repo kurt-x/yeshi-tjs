@@ -8,8 +8,8 @@ import org.hibernate.annotations.SQLRestriction
 /** # 角色表 */
 @Entity(name = "Role")
 @Table(
-    name = "role_dt",
-    uniqueConstraints = [UniqueConstraint("uk_role_flag", ["flag", "deleted_time"])],
+    name = "roles",
+    uniqueConstraints = [UniqueConstraint("uk_roles_flag", ["flag", "deleted_time"])],
     comment = "角色表"
 )
 @SQLRestriction("deleted_time is null")
@@ -24,9 +24,12 @@ class RolePO : FlagPO()
     /** 权限集 */
     @ManyToMany
     @JoinTable(
-        name = "role_permission_at",
-        joinColumns = [JoinColumn("role_id")],
-        inverseJoinColumns = [JoinColumn("permission_id")],
+        name = "role_permissions",
+        joinColumns = [JoinColumn("role_id", foreignKey = ForeignKey(name = "fk_role_permissions_role"))],
+        inverseJoinColumns = [JoinColumn(
+            "permission_id",
+            foreignKey = ForeignKey(name = "fk_role_permissions_permission")
+        )],
         comment = "权限集",
     )
     @SQLRestriction("deleted_time is null")

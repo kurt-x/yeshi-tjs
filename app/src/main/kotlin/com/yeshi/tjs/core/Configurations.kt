@@ -86,7 +86,7 @@ class DatabaseConfiguration
         }
     }
 
-    /** 使用 [Instant#now()] 获取当前时间 */
+    /** 使用 [Instant.now] 获取当前时间 */
     @Bean
     fun auditingDateTimeProvider() = LOG.info("配置审计时间自动填充").run {
         DateTimeProvider { Optional.of(Instant.now()) }

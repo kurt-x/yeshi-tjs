@@ -10,13 +10,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import java.io.Serializable
 import java.time.Instant
 
-/** # 持久化对象基类
- *
- * 数据库相关名称规范：
- * - DT: Data Table 数据表
- * - AT: Association Table 关联表
- * - UK: Union Key 唯一键
- */
+/** # 持久化对象基类 */
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener::class)
 abstract class BasePO : Serializable
