@@ -8,7 +8,7 @@ plugins {
     id("org.hibernate.orm") version "7.0.3.Final"
 }
 
-val env = rootProject.properties["env"] as String? ?: "prod"
+val env = project.findProperty("env") as? String ?: "prod"
 
 // hibernate 字节码增强
 hibernate {
@@ -24,11 +24,8 @@ java {
     sourceSets.main {
         // 排除非指定环境的 application.yml 配置文件
         resources.exclude {
-            val name = it.file.name
-            Regex("application-.+\\.yml").matches(name) && name != "application-$env.yml"
+            it.name.run { Regex("application-\\w+\\.yml").matches(this) && this != "application-$env.yml" }
         }
-
-        resources.exclude { env in arrayOf("prod", "test") && it.file.name == "data.sql" }
     }
 }
 
@@ -78,8 +75,6 @@ dependencies {
 
 springBoot.mainClass = "com.yeshi.tjs.AppKt"
 
-tasks.bootRun { args = listOf("--spring.profiles.active=$env") }
-
 tasks.withType<Test> {
     useJUnitPlatform()
 }
@@ -91,7 +86,6 @@ tasks.processResources {
             "tokens" to mapOf(
                 "project-name" to rootProject.name,
                 "project-version" to rootProject.version,
-                "runtime-environment" to env
             )
         )
     }

@@ -7,7 +7,7 @@ import org.springframework.web.ErrorResponseException
 import java.time.Clock
 
 /** # 未捕获异常事件 */
-class UncaughtExceptionEvent(source: Exception) : ApplicationEvent(source, Clock.systemUTC())
+class UncaughtExceptionEvent(source: Exception) : ApplicationEvent(source, Clock.systemDefaultZone())
 
 /** # 服务异常 */
 open class ServiceException(
@@ -17,3 +17,10 @@ open class ServiceException(
     code: String? = null,
     args: Array<out Any>? = null,
 ) : ErrorResponseException(status, body, cause, code, args)
+
+/**
+ * # 已处理完成声明
+ *
+ * 声明某件事已经完成，用于跳出处理程序，**并不是真正的异常**
+ */
+open class CompletedNoticeException() : RuntimeException()

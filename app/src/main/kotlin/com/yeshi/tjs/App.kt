@@ -34,7 +34,7 @@ class BootListener(app: SpringApplication, args: Array<String?>?) : SpringApplic
 
         val projectName = env.getProperty("spring.application.name", "project")
         val protocol = if (env.getProperty("server.ssl.enabled") in arrayOf("true", "on")) "https" else "http"
-        val port = env.getProperty("server.port", "8080")
+        val port = env.getProperty("server.port", "10000")
 
         mainLogger.info(
             """

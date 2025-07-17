@@ -1,7 +1,7 @@
 package com.yeshi.tjs
 
+import com.yeshi.tjs.util.LOG
 import jakarta.servlet.http.HttpServletRequest
-import org.slf4j.LoggerFactory
 import org.springframework.context.MessageSource
 import org.springframework.context.MessageSourceResolvable
 import org.springframework.context.NoSuchMessageException
@@ -9,18 +9,20 @@ import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.stereotype.Service
 import java.util.*
 
-/** 国际化消息服务 */
+/** # 通用服务 */
+@Service
+class MainService
+
+/** # 国际化消息服务 */
 @Service
 class MessageService(
     private val messageSource: MessageSource,
     private val request: HttpServletRequest,
 )
 {
-    private val log = LoggerFactory.getLogger(this::class.java)
-
     init
     {
-        log.info("加载国际化消息服务")
+        LOG.info("加载国际化消息服务")
     }
 
     /** @see MessageSource.getMessage */

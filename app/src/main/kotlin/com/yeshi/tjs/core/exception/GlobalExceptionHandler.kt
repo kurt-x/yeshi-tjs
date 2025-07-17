@@ -1,6 +1,7 @@
 package com.yeshi.tjs.core.exception
 
-import org.slf4j.LoggerFactory
+import com.yeshi.tjs.util.LOG
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.context.MessageSource
 import org.springframework.context.i18n.LocaleContextHolder
@@ -20,7 +21,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 class GlobalExceptionHandler(messageSource: MessageSource, private val publisher: ApplicationEventPublisher) :
     ResponseEntityExceptionHandler()
 {
-    private val log = LoggerFactory.getLogger(this::class.java)
+    private val log = LOG
 
     init
     {
@@ -28,21 +29,31 @@ class GlobalExceptionHandler(messageSource: MessageSource, private val publisher
         setMessageSource(messageSource)
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ExceptionHandler(CompletedNoticeException::class)
+    fun handleCompletedNotice() = Unit
+
     /** 保底异常处理 */
     @ExceptionHandler(Exception::class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    fun handleUncaughtException(e: Exception) =
+    fun handleUncaught(e: Exception, request: HttpServletRequest) =
         runCatching {
             log.error("--\uD83D\uDD25 Uncaught exception", e)
             publisher.publishEvent(UncaughtExceptionEvent(e))
         }.onFailure {
             System.err.printf("--\uD83D\uDEA8 Logging failed: %s%n", it.message)
             it.printStackTrace(System.err)
-        }.let { messageSource!!.getMessage("exception", null, "Server error", LocaleContextHolder.getLocale()) }
+        }.let {
+            messageSource!!.getMessage(
+                "exception",
+                null,
+                "Server error",
+                request.locale ?: LocaleContextHolder.getLocale()
+            )
+        }
 
     override fun handleHandlerMethodValidationException(
-        e: HandlerMethodValidationException,
-        headers: HttpHeaders, status: HttpStatusCode, req: WebRequest
+        e: HandlerMethodValidationException, headers: HttpHeaders, status: HttpStatusCode, req: WebRequest
     ): ResponseEntity<Any?>?
     {
         if (log.isDebugEnabled)

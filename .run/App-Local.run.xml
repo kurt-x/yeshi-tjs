@@ -10,6 +10,8 @@
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>
-    <method v="2" />
+    <method v="2">
+      <option name="Gradle.BeforeRunTask" enabled="true" tasks="build" externalProjectPath="$PROJECT_DIR$" vmOptions="" scriptParameters="-Penv=local" />
+    </method>
   </configuration>
 </component>

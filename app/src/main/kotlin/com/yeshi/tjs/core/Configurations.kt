@@ -96,7 +96,7 @@ class DatabaseConfiguration
     @Bean
     fun auditorAware() = LOG.info("配置审计人 ID 自动填充").run {
         AuditorAware<Long> {
-            TODO("实现审计人 ID 自动填充")
+            TODO("审计人 ID 自动填充")
         }
     }
 
@@ -120,16 +120,17 @@ class DatabaseConfiguration
 class SecurityConfiguration
 {
     @Bean
-    fun passwordEncoder() = LOG.info("配置密码编码器").run {
-        PasswordEncoderFactories.createDelegatingPasswordEncoder()!!
-    }
+    fun passwordEncoder() =
+        LOG.info("配置密码编码器").run { PasswordEncoderFactories.createDelegatingPasswordEncoder()!! }
 
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain = LOG.info("配置 Security 责任链").run {
         http
             .authorizeHttpRequests {
                 it
-                    .requestMatchers(HttpMethod.POST, "/login/*").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/").permitAll()
+                    .requestMatchers(HttpMethod.HEAD, "/", "/ping").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/login").permitAll()
                     .anyRequest().authenticated()
             }
             .csrf { it.disable() }
