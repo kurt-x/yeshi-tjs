@@ -9,8 +9,33 @@ import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedBy
 import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
+import org.springframework.security.authentication.AbstractAuthenticationToken
+import org.springframework.security.core.GrantedAuthority
 import java.io.Serializable
 import java.time.Instant
+import java.util.*
+
+/** # Token */
+class AuthenticationToken(
+    private val userId: UUID, private val username: String, authorities: Collection<GrantedAuthority>
+) :
+    AbstractAuthenticationToken(authorities)
+{
+    init
+    {
+        super.setAuthenticated(true)
+    }
+
+    /** ### 用户 UUID */
+    override fun getPrincipal(): UUID = userId
+
+    /** ### 用户名 */
+    override fun getName() = username
+
+    override fun getCredentials() = throw UnsupportedOperationException()
+
+    override fun setAuthenticated(authenticated: Boolean) = throw UnsupportedOperationException()
+}
 
 /** # 持久化对象基类 */
 @MappedSuperclass
