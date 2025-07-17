@@ -3,12 +3,13 @@ package com.yeshi.tjs.pojo.po
 import com.yeshi.tjs.core.BasePO
 import com.yeshi.tjs.core.constants.*
 import com.yeshi.tjs.util.UUID4
-import com.yeshi.tjs.util.UUID7
 import jakarta.persistence.*
 import jakarta.validation.constraints.Pattern
 import jakarta.validation.constraints.Size
 import org.hibernate.annotations.SQLDelete
 import org.hibernate.annotations.SQLRestriction
+import org.hibernate.annotations.UuidGenerator
+import java.util.*
 
 /** # 用户表 */
 @Entity(name = "User")
@@ -27,6 +28,13 @@ import org.hibernate.annotations.SQLRestriction
 @SQLDelete(sql = "update #{#entityName} set deleted_time = current_timestamp where id = ?;")
 class UserPO : BasePO()
 {
+    /** 数据 ID */
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @UuidGenerator(style = UuidGenerator.Style.VERSION_7)
+    @Column(nullable = false, updatable = false, comment = "数据 ID")
+    var id: UUID? = null
+
     /** UUID, v7（不带横杠 -） */
     @Column(length = SIMPLE_UUID_SIZE, nullable = false, updatable = false, comment = "UUID, v7")
     var uuid: String? = null
@@ -83,7 +91,6 @@ class UserPO : BasePO()
     fun prePersist()
     {
         require(phone != null || email != null) { "必须有一个有效的手机号或邮箱！" }
-        uuid = UUID7.toString().replace("_", "")
         secureKey = UUID4.toString()
     }
 }

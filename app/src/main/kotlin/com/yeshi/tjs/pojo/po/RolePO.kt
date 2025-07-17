@@ -16,6 +16,12 @@ import org.hibernate.annotations.SQLRestriction
 @SQLDelete(sql = "update #{#entityName} set deleted_time = current_timestamp where id = ?;")
 class RolePO : FlagPO()
 {
+    /** 数据 ID */
+    @Id
+    @GeneratedValue
+    @Column(nullable = false, updatable = false, comment = "数据 ID")
+    var id: Long? = null
+
     /** 拥有该角色的用户集合 */
     @ManyToMany(mappedBy = "roles")
     @SQLRestriction("deleted_time is null")

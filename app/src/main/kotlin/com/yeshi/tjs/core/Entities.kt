@@ -1,6 +1,8 @@
 package com.yeshi.tjs.core
 
-import jakarta.persistence.*
+import jakarta.persistence.Column
+import jakarta.persistence.EntityListeners
+import jakarta.persistence.MappedSuperclass
 import jakarta.validation.constraints.Size
 import org.springframework.data.annotation.CreatedBy
 import org.springframework.data.annotation.CreatedDate
@@ -15,12 +17,6 @@ import java.time.Instant
 @EntityListeners(AuditingEntityListener::class)
 abstract class BasePO : Serializable
 {
-    /** 数据 ID */
-    @Id
-    @GeneratedValue
-    @Column(nullable = false, updatable = false, comment = "数据 ID")
-    var id: Long? = null
-
     /** 备注 */
     @Column(comment = "备注")
     var remark: String? = null

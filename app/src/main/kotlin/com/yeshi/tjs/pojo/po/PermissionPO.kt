@@ -1,10 +1,7 @@
 package com.yeshi.tjs.pojo.po
 
 import com.yeshi.tjs.core.FlagPO
-import jakarta.persistence.Entity
-import jakarta.persistence.ManyToMany
-import jakarta.persistence.Table
-import jakarta.persistence.UniqueConstraint
+import jakarta.persistence.*
 import org.hibernate.annotations.SQLDelete
 import org.hibernate.annotations.SQLRestriction
 
@@ -19,6 +16,12 @@ import org.hibernate.annotations.SQLRestriction
 @SQLDelete(sql = "update #{#entityName} set deleted_time = current_timestamp where id = ?;")
 class PermissionPO : FlagPO()
 {
+    /** 数据 ID */
+    @Id
+    @GeneratedValue
+    @Column(nullable = false, updatable = false, comment = "数据 ID")
+    var id: Long? = null
+
     /** 拥有该权限的角色集合 */
     @ManyToMany(mappedBy = "permissions")
     @SQLRestriction("deleted_time is null")
