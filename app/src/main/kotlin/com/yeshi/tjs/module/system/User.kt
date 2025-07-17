@@ -7,6 +7,13 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 import java.util.*
 
+/** # 用户 */
+class User
+{
+    lateinit var id: UUID
+    lateinit var name: String
+}
+
 /** 用户数据映射 */
 @Mapper interface UserMapper
 

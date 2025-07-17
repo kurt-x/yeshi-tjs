@@ -3,7 +3,6 @@ package com.yeshi.tjs.core
 import jakarta.persistence.Column
 import jakarta.persistence.EntityListeners
 import jakarta.persistence.MappedSuperclass
-import jakarta.validation.constraints.Size
 import org.springframework.data.annotation.CreatedBy
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedBy
@@ -43,7 +42,7 @@ class AuthenticationToken(
 abstract class BasePO : Serializable
 {
     /** 备注 */
-    @Column(comment = "备注")
+    @Column(comment = "备注", columnDefinition = "text")
     var remark: String? = null
 
     /** 数据创建者 ID */
@@ -80,7 +79,6 @@ abstract class BasePO : Serializable
 abstract class FlagPO : BasePO()
 {
     /** 标记 */
-    @Size(max = 255)
     @Column(nullable = false, comment = "标记")
     var flag: String? = null
 }

@@ -43,7 +43,7 @@ class UserPO : BasePO()
     var name: String? = null
 
     /** 密码（加密后的密文） */
-    @Column(length = 255, nullable = false, comment = "密码（加密后的密文）")
+    @Column(nullable = false, comment = "密码（加密后的密文）")
     var password: String? = null
 
     /** 用于加密密码的密钥，随机 UUID */
@@ -60,7 +60,7 @@ class UserPO : BasePO()
 
     /** 邮箱 */
     @Pattern(regexp = REGEX_EMAIL)
-    @Column(length = 255, comment = "邮箱")
+    @Column(comment = "邮箱")
     var email: String? = null
 
     /** 角色集 */
@@ -73,14 +73,14 @@ class UserPO : BasePO()
         comment = "角色集",
     )
     @SQLRestriction("deleted_time is null")
-    private var roles: Set<RolePO>? = null
+    var roles: Set<RolePO>? = null
 
     /** 是否已锁定 */
-    @Column(comment = "是否已锁定")
+    @Column(nullable = false, comment = "是否已锁定")
     var locked: Boolean? = null
 
     /** 是否可用 */
-    @Column(comment = "是否可用")
+    @Column(nullable = false, comment = "是否可用")
     var enabled: Boolean? = null
 
     /** @throws IllegalArgumentException 手机号和邮箱同时为无效状态 */
