@@ -1,7 +1,10 @@
 package com.yeshi.tjs.pojo.po
 
 import com.yeshi.tjs.core.BasePO
-import com.yeshi.tjs.core.constants.*
+import com.yeshi.tjs.core.constants.REGEX_EMAIL
+import com.yeshi.tjs.core.constants.REGEX_PHONE
+import com.yeshi.tjs.core.constants.REGEX_USER_NAME
+import com.yeshi.tjs.core.constants.UUID_SIZE
 import com.yeshi.tjs.util.UUID4
 import jakarta.persistence.*
 import jakarta.validation.constraints.Pattern
@@ -16,10 +19,9 @@ import java.util.*
 @Table(
     name = "users",
     uniqueConstraints = [
-        UniqueConstraint("uk_users_uuid", ["uuid"]),
-        UniqueConstraint("uk_users_name", ["name", "deleted_time"]),
-        UniqueConstraint("uk_users_phone", ["phone", "deleted_time"]),
-        UniqueConstraint("uk_users_email", ["email", "deleted_time"]),
+        UniqueConstraint(columnNames = ["name", "deleted_time"]),
+        UniqueConstraint(columnNames = ["phone", "deleted_time"]),
+        UniqueConstraint(columnNames = ["email", "deleted_time"]),
     ],
 
     comment = "用户表"
@@ -35,35 +37,30 @@ class UserPO : BasePO()
     @Column(nullable = false, updatable = false, comment = "数据 ID")
     var id: UUID? = null
 
-    /** UUID, v7（不带横杠 -） */
-    @Column(length = SIMPLE_UUID_SIZE, nullable = false, updatable = false, comment = "UUID, v7")
-    var uuid: String? = null
-
     /** 用户名 */
-    @Size(max = 255)
     @Pattern(regexp = REGEX_USER_NAME)
-    @Column(nullable = false, comment = "用户名")
+    @Column(length = 50, nullable = false, comment = "用户名")
     var name: String? = null
 
     /** 密码（加密后的密文） */
-    @Size(max = 500)
-    @Column(nullable = false, comment = "密码（加密后的密文）")
+    @Column(length = 255, nullable = false, comment = "密码（加密后的密文）")
     var password: String? = null
 
     /** 用于加密密码的密钥，随机 UUID */
-    @Column(length = UUID_SIZE, nullable = false, updatable = false, comment = "用于加密密码的密钥，随机 UUID")
+    @Column(
+        nullable = false, updatable = false,
+        comment = "用于加密密码随机 UUID 秘钥", columnDefinition = "char($UUID_SIZE)"
+    )
     var secureKey: String? = null
 
     /** 手机号 */
-    @Size(max = 50)
     @Pattern(regexp = REGEX_PHONE)
-    @Column(comment = "手机号")
+    @Column(length = 50, comment = "手机号")
     var phone: String? = null
 
     /** 邮箱 */
-    @Size(max = 255)
     @Pattern(regexp = REGEX_EMAIL)
-    @Column(comment = "邮箱")
+    @Column(length = 255, comment = "邮箱")
     var email: String? = null
 
     /** 角色集 */
@@ -71,8 +68,8 @@ class UserPO : BasePO()
     @ManyToMany
     @JoinTable(
         name = "user_roles",
-        joinColumns = [JoinColumn("user_id", foreignKey = ForeignKey(name = "fk_user_roles_user"))],
-        inverseJoinColumns = [JoinColumn("role_id", foreignKey = ForeignKey(name = "fk_user_roles_role"))],
+        joinColumns = [JoinColumn("user_id")],
+        inverseJoinColumns = [JoinColumn("role_id")],
         comment = "角色集",
     )
     @SQLRestriction("deleted_time is null")

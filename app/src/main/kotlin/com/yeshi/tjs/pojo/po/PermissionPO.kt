@@ -9,7 +9,7 @@ import org.hibernate.annotations.SQLRestriction
 @Entity(name = "Permission")
 @Table(
     name = "permissions",
-    uniqueConstraints = [UniqueConstraint("uk_permissions_flag", ["flag", "deleted_time"])],
+    uniqueConstraints = [UniqueConstraint(columnNames = ["flag", "deleted_time"])],
     comment = "权限表"
 )
 @SQLRestriction("deleted_time is null")
