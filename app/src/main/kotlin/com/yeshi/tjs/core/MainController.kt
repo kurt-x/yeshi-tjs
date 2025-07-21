@@ -84,7 +84,7 @@ class MainController(
     /**
      * ### 邮箱登录
      *
-     * @param principal 账号（手机号）
+     * @param principal 账号（邮箱）
      * @param credentials 为空时表示需要获取验证码，不为空时应为用于登录的验证码
      */
     @Validated
