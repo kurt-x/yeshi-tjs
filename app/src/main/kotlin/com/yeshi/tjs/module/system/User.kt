@@ -2,6 +2,7 @@ package com.yeshi.tjs.module.system
 
 import com.yeshi.tjs.pojo.po.RolePO
 import com.yeshi.tjs.pojo.po.UserPO
+import com.yeshi.tjs.pojo.po.PermissionPO
 import org.apache.ibatis.annotations.Mapper
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
@@ -24,4 +25,4 @@ class User
 @Repository interface RoleRepository : JpaRepository<RolePO, Long>
 
 /** 权限数据接口 */
-@Repository interface PermissionRepository : JpaRepository<RolePO, Long>
+@Repository interface PermissionRepository : JpaRepository<PermissionPO, Long>

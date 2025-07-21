@@ -18,7 +18,7 @@ const val ENV_TEST = "test"
 /** 项目运行环境：生产环境 */
 const val ENV_PROD = "prod"
 
-/** 默认本地 Ipv4 */
+/** 默认本地 IPv4 */
 const val DEFAULT_LOCAL_IP4 = "127.0.0.1"
 
 /** `date time` 格式模板 */
