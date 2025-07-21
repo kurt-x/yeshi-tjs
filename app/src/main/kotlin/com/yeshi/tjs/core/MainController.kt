@@ -90,7 +90,7 @@ class MainController(
     @Validated
     @PostMapping(
         "/login",
-        name = "loginByPhone",
+        name = "loginByEmail",
         headers = ["$HEADER_AUTH_TYPE=$AUTH_TYPE_EMAIL"],
         consumes = [MediaType.APPLICATION_FORM_URLENCODED_VALUE],
         produces = [MediaType.TEXT_PLAIN_VALUE]
